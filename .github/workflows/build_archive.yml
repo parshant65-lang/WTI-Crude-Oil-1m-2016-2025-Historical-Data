@@ -1,0 +1,27 @@
+name: Ingest Crude Oil 1m Archive
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  ingest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Dependencies
+        run: |
+          pip install pandas pyarrow
+
+      - name: Run Cloud Ingestion
+        run: |
+          python ingest_oil.py --symbol USOIL --dataset bunqi/OANDA_WTICOUSD_West-Texas-Oil --start-year 2016 --end-year 2026
